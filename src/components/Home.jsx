@@ -3,22 +3,14 @@ import logo from '../assets/logo.webp';
 import React from 'react'
 import ColorModeSwitch from './ColorModeSwitch';
 import LoginPage from './LoginPage';
-import { Link } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
+import NavBar from './NavBar'
 
 const Home = () => {
     return (
         <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/snake">Snake</Link>
-          </li>
-        </ul>
-      </nav>
-
+      <NavBar />
+      <Outlet />
     </>
       )
     }
