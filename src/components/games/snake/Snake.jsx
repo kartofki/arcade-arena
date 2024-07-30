@@ -15,7 +15,7 @@ const App = () => {
   const [snake, setSnake] = useState(SNAKE_START);
   const [apple, setApple] = useState(APPLE_START);
   const [dir, setDir] = useState([0, -1]);
-  const [speed, setSpeed] = useState(null); // Initially null to prevent game loop from running
+  const [speed, setSpeed] = useState(null); 
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [directionChanged, setDirectionChanged] = useState(false);
@@ -25,7 +25,6 @@ const App = () => {
   const endGame = () => {
     setSpeed(null);
     setGameOver(true);
-    // Add sound effect for game over
     new Audio("/assets/gameover.mp3").play();
   };
 
@@ -37,7 +36,7 @@ const App = () => {
     (e) => {
       const { keyCode } = e;
       if (keyCode >= 37 && keyCode <= 40) {
-        e.preventDefault();  // Prevent default behavior (scrolling)
+        e.preventDefault();  
         const newDir = DIRECTIONS[keyCode];
         if (!isOppositeDirection(newDir, dir) && !gameOver && !directionChanged) {
           setDir(newDir);
@@ -66,7 +65,6 @@ const App = () => {
       }
       setApple(newApple);
       setScore(score + 1);
-      // Play sound effect for eating apple
       new Audio("/assets/eat.mp3").play();
       return true;
     }
@@ -74,12 +72,11 @@ const App = () => {
   };
 
   const gameLoop = () => {
-    setDirectionChanged(false); // Reset direction change tracker
+    setDirectionChanged(false); // 
 
     const snakeCopy = JSON.parse(JSON.stringify(snake));
     let newSnakeHead = [snakeCopy[0][0] + dir[0], snakeCopy[0][1] + dir[1]];
 
-    // Wrap snake position around canvas edges
     if (newSnakeHead[0] * SCALE >= CANVAS_SIZE[0]) {
       newSnakeHead[0] = 0;
     } else if (newSnakeHead[0] < 0) {
@@ -96,7 +93,6 @@ const App = () => {
     if (checkCollision(newSnakeHead)) return endGame();
     if (!checkAppleCollision(snakeCopy)) snakeCopy.pop();
     setSnake(snakeCopy);
-    // Increase speed as score increases
     if (score > 0 && score < 20 && score % 5 === 0) {
       setSpeed(speed => Math.max(speed - 10, 300));
     }
@@ -111,7 +107,7 @@ const App = () => {
     setSnake(SNAKE_START);
     setApple(APPLE_START);
     setDir([0, -1]);
-    setSpeed(500); // Set initial speed when the game starts
+    setSpeed(500); 
     setGameOver(false);
     setScore(0);
     setDirectionChanged(false);
@@ -122,11 +118,11 @@ const App = () => {
     context.setTransform(SCALE, 0, 0, SCALE, 0, 0);
 
     // Draw background
-    context.fillStyle = "#e8e8e8"; // light gray
+    context.fillStyle = "#e8e8e8"; 
     context.fillRect(0, 0, CANVAS_SIZE[0], CANVAS_SIZE[1]);
 
     // Draw grid
-    context.strokeStyle = "#c2bebe"; // slightly darker gray
+    context.strokeStyle = "#c2bebe"; 
     context.lineWidth = 0.01;
     for (let x = 0; x < CANVAS_SIZE[0] / SCALE; x++) {
       for (let y = 0; y < CANVAS_SIZE[1] / SCALE; y++) {
@@ -136,17 +132,17 @@ const App = () => {
 
     // Draw snake
     snake.forEach(([x, y], index) => {
-      context.fillStyle = index === 0 ? "#006400" : "#008000"; // dark green for head, green for body
+      context.fillStyle = index === 0 ? "#006400" : "#008000"; 
       context.fillRect(x, y, 1, 1);
-      context.strokeStyle = "#005000"; // slightly darker green for border
+      context.strokeStyle = "#005000"; r
       context.lineWidth = 0.01;
       context.strokeRect(x, y, 1, 1);
     });
 
     // Draw apple
-    context.fillStyle = "#ff0000"; // red
+    context.fillStyle = "#ff0000"; 
     context.fillRect(apple[0], apple[1], 1, 1);
-    context.strokeStyle = "#8b0000"; // dark red
+    context.strokeStyle = "#8b0000"; 
     context.lineWidth = 0.01;
     context.strokeRect(apple[0], apple[1], 1, 1);
   }, [snake, apple, gameOver]);
