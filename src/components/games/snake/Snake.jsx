@@ -134,7 +134,7 @@ const App = () => {
     snake.forEach(([x, y], index) => {
       context.fillStyle = index === 0 ? "#006400" : "#008000"; 
       context.fillRect(x, y, 1, 1);
-      context.strokeStyle = "#005000"; r
+      context.strokeStyle = "#005000"; 
       context.lineWidth = 0.01;
       context.strokeRect(x, y, 1, 1);
     });
