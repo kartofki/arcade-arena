@@ -4,13 +4,27 @@ import { createUserWithEmailAndPassword,
          sendPasswordResetEmail, 
          signInWithEmailAndPassword } 
          from "firebase/auth";
+import NavBar from './NavBar.jsx'
 
 
 function LoginPage() {
-  const [loginType, setLoginType] = useState('login');
-  const [userCredentials, setUserCredentials] = useState({});
-  const [error, setError] = useState('');
+    const AuthForm = () => {
+        const [isLoggedIn, setIsLoggedIn] = useState(true);
+        const navigate = useNavigate();
+        const [inputs, setInputs] = useState({
+            email: "",
+            password: "",
+            confirmPassword: "",
+        })
+    }
 
+    const handleAuth = () => {
+        if(!inputs.email || !inputs.password){
+            alert("Please fill all the fields!");
+            return; 
+        }
+        navigate("/")
+    }
 
   function handleCredentials(e) {
     
@@ -66,6 +80,8 @@ function LoginPage() {
   
     return (
       <>        
+        <NavBar />
+
         <div className="container login-page">
           <section>
             <p>Login or create an account to continue</p>
@@ -94,7 +110,12 @@ function LoginPage() {
                     loginType == 'login' ?
                     <button onClick={(e)=>{handleLogin(e)}} className="active btn btn-block">Login</button>
                     : 
+                    <div className="form-control">
+                      <label> Repeat Password *</label>
+                      <input onChange={(e) => handleCredentials(e)} type="password" name="password" placeholder="Repeat your password" />
+                  
                     <button onClick={(e)=>{handleSignup(e)}}className="active btn btn-block">Sign Up</button>
+                    </div>
                   }
 
                 {

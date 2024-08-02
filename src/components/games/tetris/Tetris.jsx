@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
+import NavBar from '../../NavBar'
 
 //styled components
 import { StyledTetris, StyledTetrisWrapper } from './StyledTetris';
@@ -122,6 +123,8 @@ const Tetris = () => {
   };
 
   return (
+    <>
+    <NavBar />
     <StyledTetrisWrapper ref={gameWrapperRef} role="button" tabIndex="0" onKeyDown={e => move(e)} onKeyUp={keyUp}>
       <StyledTetris>
         <Stage stage={stage} />
@@ -139,6 +142,7 @@ const Tetris = () => {
         </aside>
       </StyledTetris>
     </StyledTetrisWrapper>
+    </>
   );
 };
 

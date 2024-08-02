@@ -7,6 +7,15 @@ const Home = () => {
     return (
         <>
       <NavBar />
+      <div className='frontPage'>
+        <div className="bgText">
+        <h1>Join the biggest Arcade Games platform</h1>
+        <button>Sign Up</button>
+        <button>Log In</button>
+        </div>
+      </div>
+
+      
       <Outlet />
     </>
       )
