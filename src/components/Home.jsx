@@ -9,9 +9,11 @@ const Home = () => {
       <NavBar />
       <div className='frontPage'>
         <div className="bgText">
-        <h1>Join the biggest Arcade Games platform</h1>
-        <button>Sign Up</button>
-        <button>Log In</button>
+        <img className="frontText" src="../public/assets/textt.png"/>
+        <div className="buttonsContainer">
+        <Link to="/signup"><button>Sign Up</button></Link>
+        <Link to="/auth"><button>Log In</button></Link>
+        </div>
         </div>
       </div>
 

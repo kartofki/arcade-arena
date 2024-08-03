@@ -26,22 +26,22 @@ const Tetris = () => {
 
   const gameWrapperRef = useRef(null);
 
-  const move = ({ keyCode }) => {
+  const move = (e) => {
+    e.preventDefault(); // Prevent the default behavior
     if (!gameOver) {
-      if (keyCode === 37) {
+      if (e.keyCode === 37) {
         movePlayer(-1);
-      } else if (keyCode === 39) {
+      } else if (e.keyCode === 39) {
         movePlayer(1);
-      } else if (keyCode === 40) {
+      } else if (e.keyCode === 40) {
         dropPlayer();
-      } else if (keyCode === 32) {
+      } else if (e.keyCode === 32) {
         hardDrop();
-      } else if (keyCode === 38) {
+      } else if (e.keyCode === 38) {
         playerRotate(stage, 1);
       }
     }
   };
-
   useInterval(() => {
     drop();
   }, dropTime);

@@ -8,7 +8,7 @@ const useSignUpWithEmailAndPassword = () => {
 	const loginUser = useAuthStore((state) => state.login);
 
 	const signup = async (inputs) => {
-		if (!inputs.email || !inputs.password || !inputs.username || !inputs.fullName) {
+		if (!inputs.email || !inputs.password || !inputs.username) {
 			console.log('error')
 			return;
 		}
@@ -19,14 +19,14 @@ const useSignUpWithEmailAndPassword = () => {
 		const querySnapshot = await getDocs(q);
 
 		if (!querySnapshot.empty) {
-			console.log('error')
+			console.log("error")
 			return;
 		}
 
 		try {
 			const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password);
 			if (!newUser && error) {
-				console.log('error')
+				console.log(error.message)
 				return;
 			}
 			if (newUser) {
@@ -34,7 +34,6 @@ const useSignUpWithEmailAndPassword = () => {
 					uid: newUser.user.uid,
 					email: inputs.email,
 					username: inputs.username,
-					fullName: inputs.fullName,
 					bio: "",
 					profilePicURL: "",
 					followers: [],
@@ -47,7 +46,7 @@ const useSignUpWithEmailAndPassword = () => {
 				loginUser(userDoc);
 			}
 		} catch (error) {
-			console.log('error')
+			console.log(error.message)
 		}
 	};
 
