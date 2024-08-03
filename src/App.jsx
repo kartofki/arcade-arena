@@ -7,6 +7,7 @@ import LoginPage from "./components/LoginPage";
 import NavBar from "./components/NavBar"
 import Signup from "./components/Signup";
 import AuthPage from "./components/AuthPage";
+import Login from "./components/Login";
 
 
 
@@ -18,6 +19,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/register" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/snake" element={<Snake />} />
           <Route path="/tetris" element={<Tetris />} />
         </Routes>

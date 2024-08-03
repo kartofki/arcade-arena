@@ -11,7 +11,6 @@ const AuthPage = () => {
   return (
   <>
   {isLoggedIn ? <Login /> : <Signup />}
-  <GoogleAuth />
   </>
   )
 }

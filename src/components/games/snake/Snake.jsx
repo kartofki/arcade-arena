@@ -118,11 +118,11 @@ const App = () => {
     context.setTransform(SCALE, 0, 0, SCALE, 0, 0);
 
     // Draw background
-    context.fillStyle = "#e8e8e8"; 
+    context.fillStyle = "#3d3d3d"; 
     context.fillRect(0, 0, CANVAS_SIZE[0], CANVAS_SIZE[1]);
 
     // Draw grid
-    context.strokeStyle = "#c2bebe"; 
+    context.strokeStyle = "#1f1e1e"; 
     context.lineWidth = 0.01;
     for (let x = 0; x < CANVAS_SIZE[0] / SCALE; x++) {
       for (let y = 0; y < CANVAS_SIZE[1] / SCALE; y++) {
@@ -151,6 +151,9 @@ const App = () => {
   return (
     <>
     <NavBar />
+
+    <div className="snakeScreen">
+        <div className="snakeContainer">
     <div
       role="button"
       tabIndex="0"
@@ -193,6 +196,8 @@ const App = () => {
       >
         Restart Game
       </button>}
+    </div>
+    </div>
     </div>
     </>
   );

@@ -11,8 +11,8 @@ const Home = () => {
         <div className="bgText">
         <img className="frontText" src="../public/assets/textt.png"/>
         <div className="buttonsContainer">
-        <Link to="/signup"><button>Sign Up</button></Link>
-        <Link to="/auth"><button>Log In</button></Link>
+        <Link to="/register"><button>Sign Up</button></Link>
+        <Link to="/login"><button>Log In</button></Link>
         </div>
         </div>
       </div>

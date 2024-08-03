@@ -3,6 +3,7 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import useSignupWithEmailAndPassword from '../hooks/useSignupWithEmailAndPassword';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar'
+import { Link } from 'react-router-dom';
 
 
 const Signup = () => {
@@ -41,7 +42,7 @@ const Signup = () => {
         </button>
         {/*separator*/}
             <div className="separator"><div className="hr"></div><span>or</span><div className="hr"></div></div>
-            <p className="already2">Log in using email address</p>
+            <p className="already2">Sign up using email address</p>
       <form className="add-form login" onSubmit={handleSubmit}>
         <div className="field input-field">
           <input
@@ -90,7 +91,8 @@ const Signup = () => {
         </button>
        
       </form>
-      <p className="already">Already have an account? <a>Log In</a></p>
+      <p className="already">Already have an account? <Link to="/login"><a>Log In</a></Link></p>
+      
       </div>
       </div>
     </>
