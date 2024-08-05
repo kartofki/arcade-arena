@@ -21,7 +21,7 @@ const useSignUpWithEmailAndPassword = () => {
 		const querySnapshot = await getDocs(q);
 
 		if (!querySnapshot.empty) {
-			console.log("error")
+			console.log("User already exists.")
 			return;
 		}
 
