@@ -123,7 +123,7 @@ const App = () => {
 
     // Draw grid
     context.strokeStyle = "#1f1e1e"; 
-    context.lineWidth = 0.01;
+    context.lineWidth = 0.005;
     for (let x = 0; x < CANVAS_SIZE[0] / SCALE; x++) {
       for (let y = 0; y < CANVAS_SIZE[1] / SCALE; y++) {
         context.strokeRect(x, y, 1, 1);

@@ -6,6 +6,8 @@ import useAuthStore from "../store/authStore";
 const useSignUpWithEmailAndPassword = () => {
 	const [createUserWithEmailAndPassword, , loading, error] = useCreateUserWithEmailAndPassword(auth);
 	const loginUser = useAuthStore((state) => state.login);
+ 
+
 
 	const signup = async (inputs) => {
 		if (!inputs.email || !inputs.password || !inputs.username) {

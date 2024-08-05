@@ -3,9 +3,11 @@ import React from 'react';
 import LoginPage from './LoginPage';
 import { Link } from 'react-router-dom';
 import useLogout from '../hooks/useLogout';
+import useAuthStore from '../store/authStore';
 
 const Home = () => {
   const { handleLogout, isLoggingOut, error } = useLogout();
+  const authUser = useAuthStore(state => state.user);
 
   return (
     <>
@@ -18,7 +20,8 @@ const Home = () => {
         <Link to="/">Home</Link>
       </li>
      {/* Games Dropdown */}
-      <li className="dropdown">
+
+     {authUser && <li className="dropdown">
         <span>Games</span>
         <div className="dropdown-content">
           <li>
@@ -31,7 +34,8 @@ const Home = () => {
         </div>
         
       </li>
-
+}
+      
       <li>
         <Link to="/">Leaderboard</Link>
       </li>
@@ -43,18 +47,21 @@ const Home = () => {
     </ul>
     {/* Authentication Menu */}
     <ul className="authMenu">
-    <li>
+    {!authUser && <li>
         <Link to="/signup">Register</Link>
-      </li>
-      <li>
+      </li> }
+    
+      {!authUser && <li>
         <Link to="/auth">Login</Link>
-      </li>
-      <li>
+      </li>}
+
+      {authUser && <li>
         <Link to="/auth">Profile</Link>
-      </li>
-      <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
+      </li>}
+
+     {authUser && <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
         {isLoggingOut ? 'Logging out...' : 'Logout'}
-      </li>
+      </li>}
     </ul>
   </div>
 </nav>
