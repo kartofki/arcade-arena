@@ -9,20 +9,23 @@ import Signup from "./components/Signup";
 import AuthPage from "./components/AuthPage";
 import Login from "./components/Login";
 import useAuthStore from "./store/authStore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase/config";
 
 
 
 function App() {
-  const authUser = useAuthStore(state => state.user);
+  //const authUser = useAuthStore(state => state.user);
+  const [authUser] = useAuthState(auth);
 
   return (
     <>  
       <BrowserRouter>
         <Routes>
           <Route path="/" element={authUser ? <Home /> : <Navigate to="/auth"/> } />
-          <Route path="/auth" element={!authUser ? <AuthPage /> : <Navigate to="/"/>} />
-          <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/"/>} />
-          <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/"/>} />
+          <Route path="/auth" element={!authUser ? <AuthPage /> : <Navigate to="/"/> } />
+          <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/"/>  } />
+          <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/"/> } />
           <Route path="/snake" element={<Snake />} />
           <Route path="/tetris" element={<Tetris />} />
         </Routes>

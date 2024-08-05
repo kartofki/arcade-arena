@@ -4,7 +4,8 @@ import LoginPage from './LoginPage';
 import { Link } from 'react-router-dom';
 import useLogout from '../hooks/useLogout';
 import useAuthStore from '../store/authStore';
-
+import { Avatar } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 const Home = () => {
   const { handleLogout, isLoggingOut, error } = useLogout();
   const authUser = useAuthStore(state => state.user);
@@ -55,8 +56,14 @@ const Home = () => {
         <Link to="/auth">Login</Link>
       </li>}
 
+      {authUser &&  <Flex align="center">
+        <Link to={`${authUser.username}`}>
+      <Avatar size="xs" src={authUser.profilePicURL} /></Link>
+      <span >Hello, {authUser.username}!</span>
+    </Flex> }
+
       {authUser && <li>
-        <Link to="/auth">Profile</Link>
+        <Link to={`${authUser.username}`}>Profile</Link>
       </li>}
 
      {authUser && <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
