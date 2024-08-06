@@ -1,42 +1,37 @@
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./components/Home";
-import Snake from './components/games/snake/Snake'
-import Tetris from "./components/games/tetris/Tetris";
-import LoginPage from "./components/LoginPage";
-import NavBar from "./components/NavBar"
-import Signup from "./components/Signup";
-import AuthPage from "./components/AuthPage";
-import Login from "./components/Login";
-import useAuthStore from "./store/authStore";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase/config";
-import Profile from "./components/Profile";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Home from './components/Home';
+import AuthPage from './components/AuthPage';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import Snake from './components/games/snake/Snake';
+import Tetris from './components/games/tetris/Tetris';
+import Forum from './components/Forum';
+import Profile from './components/Profile';
+import PostView from './components/PostView'; // Import the PostView component
+import useAuthStore from './store/authStore';
+import Leaderboard from './components/Leaderboard';
+import FlappyBird from './components/games/flappybird/FlappyBird'
 
-
-
-function App() {
-  const authUser = useAuthStore(state => state.user);
-  //const [authUser] = useAuthState(auth);
-  console.log(authUser)
+const App = () => {
+  const authUser = useAuthStore(state => state.user); // Get the authUser from the store
 
   return (
-    <>  
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={authUser ? <Home /> : <Navigate to="/auth"/> } />
-          <Route path="/auth" element={!authUser ? <AuthPage /> : <Navigate to="/"/> } />
-          <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/"/>  } />
-          <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/"/> } />
-          <Route path="/snake" element={<Snake />} />
-          <Route path="/tetris" element={<Tetris />} />
-          <Route path="/:username" element={<Profile />} />
-        </Routes>
-      </BrowserRouter>
-      
-        
-    </>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={authUser ? <Home /> : <Navigate to="/auth"/> } />
+        <Route path="/auth" element={!authUser ? <AuthPage /> : <Navigate to="/"/> } />
+        <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/"/>  } />
+        <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/"/> } />
+        <Route path="/snake" element={<Snake />} />
+        <Route path="/flappybird" element={<FlappyBird />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/tetris" element={<Tetris />} />
+        <Route path="/forum" element={<Forum />} />
+        <Route path="/:username" element={<Profile />} />
+        <Route path="/posts/:postId" element={<PostView />} /> {/* Add the new route */}
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;

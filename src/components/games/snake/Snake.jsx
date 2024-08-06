@@ -5,27 +5,64 @@ import {
   SNAKE_START,
   APPLE_START,
   SCALE,
-  SPEED,
   DIRECTIONS
 } from "./constants";
-import NavBar from '../../NavBar'
+import NavBar from '../../NavBar';
+import { AddUserInLeaderboard, GetLeaderboard, GetUserHighestScore } from "./leaderboard";
+import useAuthStore from "../../../store/authStore"; // Ensure this is the correct path to your auth store
 
-const App = () => {
+const Snake = () => {
   const canvasRef = useRef();
   const [snake, setSnake] = useState(SNAKE_START);
   const [apple, setApple] = useState(APPLE_START);
   const [dir, setDir] = useState([0, -1]);
-  const [speed, setSpeed] = useState(null); 
+  const [speed, setSpeed] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [directionChanged, setDirectionChanged] = useState(false);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [highestScore, setHighestScore] = useState(0);
+  const { user } = useAuthStore();
 
   useInterval(() => gameLoop(), speed);
 
-  const endGame = () => {
+  const endGame = async () => {
     setSpeed(null);
     setGameOver(true);
     new Audio("/assets/gameover.mp3").play();
+
+    // Save score to Firestore
+    try {
+      if (user && user.username) {
+        await AddUserInLeaderboard(user.username, "snake", score);
+        fetchUserHighestScore(); // Update the highest score after saving the new score
+      }
+    } catch (error) {
+      console.error("Error adding score to leaderboard: ", error);
+    }
+
+    // Fetch leaderboard
+    fetchLeaderboard();
+  };
+
+  const fetchLeaderboard = async () => {
+    try {
+      const leaderboardData = await GetLeaderboard("snake");
+      setLeaderboard(leaderboardData);
+    } catch (error) {
+      console.error("Error fetching leaderboard: ", error);
+    }
+  };
+
+  const fetchUserHighestScore = async () => {
+    try {
+      if (user && user.username) {
+        const userHighestScore = await GetUserHighestScore(user.username, "snake");
+        setHighestScore(userHighestScore);
+      }
+    } catch (error) {
+      console.error("Error fetching user highest score: ", error);
+    }
   };
 
   const isOppositeDirection = (newDir, currentDir) => {
@@ -36,7 +73,7 @@ const App = () => {
     (e) => {
       const { keyCode } = e;
       if (keyCode >= 37 && keyCode <= 40) {
-        e.preventDefault();  
+        e.preventDefault();
         const newDir = DIRECTIONS[keyCode];
         if (!isOppositeDirection(newDir, dir) && !gameOver && !directionChanged) {
           setDir(newDir);
@@ -72,7 +109,7 @@ const App = () => {
   };
 
   const gameLoop = () => {
-    setDirectionChanged(false); // 
+    setDirectionChanged(false);
 
     const snakeCopy = JSON.parse(JSON.stringify(snake));
     let newSnakeHead = [snakeCopy[0][0] + dir[0], snakeCopy[0][1] + dir[1]];
@@ -93,36 +130,33 @@ const App = () => {
     if (checkCollision(newSnakeHead)) return endGame();
     if (!checkAppleCollision(snakeCopy)) snakeCopy.pop();
     setSnake(snakeCopy);
-    if (score > 0 && score < 20 && score % 5 === 0) {
-      setSpeed(speed => Math.max(speed - 10, 300));
-    }
-    if (score >= 20 && score % 10 === 0) {
-      setSpeed(speed => Math.max(speed - 10, 100));
-    }
-
-    console.log(speed)
   };
 
   const startGame = () => {
     setSnake(SNAKE_START);
     setApple(APPLE_START);
     setDir([0, -1]);
-    setSpeed(500); 
+    setSpeed(500);
     setGameOver(false);
     setScore(0);
     setDirectionChanged(false);
   };
 
   useEffect(() => {
+    fetchLeaderboard();
+    fetchUserHighestScore();
+  }, []);
+
+  useEffect(() => {
     const context = canvasRef.current.getContext("2d");
     context.setTransform(SCALE, 0, 0, SCALE, 0, 0);
 
     // Draw background
-    context.fillStyle = "#3d3d3d"; 
+    context.fillStyle = "#3d3d3d";
     context.fillRect(0, 0, CANVAS_SIZE[0], CANVAS_SIZE[1]);
 
     // Draw grid
-    context.strokeStyle = "#1f1e1e"; 
+    context.strokeStyle = "#1f1e1e";
     context.lineWidth = 0.005;
     for (let x = 0; x < CANVAS_SIZE[0] / SCALE; x++) {
       for (let y = 0; y < CANVAS_SIZE[1] / SCALE; y++) {
@@ -132,75 +166,81 @@ const App = () => {
 
     // Draw snake
     snake.forEach(([x, y], index) => {
-      context.fillStyle = index === 0 ? "#006400" : "#008000"; 
+      context.fillStyle = index === 0 ? "#006400" : "#008000";
       context.fillRect(x, y, 1, 1);
-      context.strokeStyle = "#005000"; 
+      context.strokeStyle = "#005000";
       context.lineWidth = 0.01;
       context.strokeRect(x, y, 1, 1);
     });
 
     // Draw apple
-    context.fillStyle = "#ff0000"; 
+    context.fillStyle = "#ff0000";
     context.fillRect(apple[0], apple[1], 1, 1);
-    context.strokeStyle = "#8b0000"; 
+    context.strokeStyle = "#8b0000";
     context.lineWidth = 0.01;
     context.strokeRect(apple[0], apple[1], 1, 1);
   }, [snake, apple, gameOver]);
-    
 
   return (
     <>
-    <NavBar />
-
-    <div className="snakeScreen">
-        <div className="snakeContainer">
-    <div
-      role="button"
-      tabIndex="0"
-      onKeyDown={e => moveSnake(e)}
-      style={{ textAlign: "center" }}
-    >
-      <canvas
-        style={{ border: "1px solid black" }}
-        ref={canvasRef}
-        width={`${CANVAS_SIZE[0]}px`}
-        height={`${CANVAS_SIZE[1]}px`}
-      />
-      <div style={{ marginTop: "10px" }}>
-        <span style={{ fontSize: "20px", fontWeight: "bold" }}>
-          Score: {score}
-        </span>
+      <NavBar />
+      <div className="snakeScreen">
+        <div className="snakeAll">
+          <div className="snakeContainer">
+            <div
+              role="button"
+              tabIndex="0"
+              onKeyDown={e => moveSnake(e)}
+              style={{ textAlign: "center" }}
+            >
+              <canvas
+                style={{ border: "1px solid black" }}
+                ref={canvasRef}
+                width={`${CANVAS_SIZE[0]}px`}
+                height={`${CANVAS_SIZE[1]}px`}
+              />
+              <div style={{ marginTop: "10px" }}>
+                <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+                  Score: {score}
+                </span>
+              </div>
+              <div style={{ marginTop: "10px" }}>
+                <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+                  Your Highest Score: {highestScore}
+                </span>
+              </div>
+              {gameOver && <div style={{ fontSize: "30px", color: "red" }}>GAME OVER!</div>}
+              {!gameOver && <button
+                onClick={startGame}
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  marginTop: "10px",
+                  borderRadius: "5px"
+                }}
+              >
+                Start Game
+              </button>}
+              {gameOver && <button
+                onClick={startGame}
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  marginTop: "10px",
+                  borderRadius: "5px"
+                }}
+              >
+                Restart Game
+              </button>}
+            </div>
+          </div>
+          
+        </div>
       </div>
-      {gameOver && <div style={{ fontSize: "30px", color: "red" }}>GAME OVER!</div>}
-      {!gameOver && <button
-        onClick={startGame}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          cursor: "pointer",
-          marginTop: "10px",
-          borderRadius: "5px"
-        }}
-      >
-        Start Game
-      </button>}
-      {gameOver && <button
-        onClick={startGame}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          cursor: "pointer",
-          marginTop: "10px",
-          borderRadius: "5px"
-        }}
-      >
-        Restart Game
-      </button>}
-    </div>
-    </div>
-    </div>
     </>
   );
 };
 
-export default App;
+export default Snake;

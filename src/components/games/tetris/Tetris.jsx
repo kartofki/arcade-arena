@@ -1,24 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-//components
+import { AddUserInLeaderboard, GetLeaderboard } from '../../../components/games/snake/leaderboard';
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
-import NavBar from '../../NavBar'
-
-//styled components
+import NavBar from '../../NavBar';
 import { StyledTetris, StyledTetrisWrapper } from './StyledTetris';
-
-//custom hooks
 import { usePlayer } from '../../../hooks/usePlayer';
 import { useStage } from '../../../hooks/useStage';
 import { createStage, checkCollision } from './tetrisUtils';
 import { useInterval } from '../../../hooks/useInterval';
 import { useGameStatus } from '../../../hooks/useGameStatus';
+import useAuthStore from '../../../store/authStore'
 
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+  const [leaderboard, setLeaderboard] = useState([]);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer(); 
   const [stage, setStage, rowsCleared, resetRowsCleared] = useStage(player, resetPlayer);
@@ -26,8 +23,10 @@ const Tetris = () => {
 
   const gameWrapperRef = useRef(null);
 
+  const user = useAuthStore((state) => state.user); // Use Zustand to get the current user
+
   const move = (e) => {
-    e.preventDefault(); // Prevent the default behavior
+    e.preventDefault();
     if (!gameOver) {
       if (e.keyCode === 37) {
         movePlayer(-1);
@@ -42,6 +41,7 @@ const Tetris = () => {
       }
     }
   };
+
   useInterval(() => {
     drop();
   }, dropTime);
@@ -57,7 +57,6 @@ const Tetris = () => {
   };
 
   const autoStartGame = () => {
-    // Reset everything
     setStage(createStage());
     setDropTime(1000);
     resetPlayer();
@@ -65,25 +64,21 @@ const Tetris = () => {
     setScore(0);
     setRows(0);
     setLevel(0);
-
   };
 
   useEffect(() => {
-    // Check if the page was loaded with the start query parameter
     const params = new URLSearchParams(window.location.search);
     if (params.get('start')) {
       autoStartGame();
       if (gameWrapperRef.current) {
-        gameWrapperRef.current.focus();  // Set focus to the game wrapper
+        gameWrapperRef.current.focus();
       }
     }
   }, []);
 
   const drop = () => {
-    // Increase level when player has cleared 10 rows
     if (rows > (level + 1) * 10) {
       setLevel(prev => prev + 1);
-      // Increase the speed
       setDropTime(1000 / (level + 1) + 200);
     }
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
@@ -93,6 +88,11 @@ const Tetris = () => {
         console.log('GAME OVER!!!');
         setGameOver(true);
         setDropTime(null);
+        if (user && user.username) {
+          AddUserInLeaderboard(user.username, 'Tetris', score).then(() => {
+            GetLeaderboard('Tetris').then(setLeaderboard);
+          });
+        }
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
     }
@@ -124,24 +124,27 @@ const Tetris = () => {
 
   return (
     <>
-    <NavBar />
-    <StyledTetrisWrapper ref={gameWrapperRef} role="button" tabIndex="0" onKeyDown={e => move(e)} onKeyUp={keyUp}>
-      <StyledTetris>
-        <Stage stage={stage} />
-        <aside>
-          {gameOver ? (
-            <Display gameOver={gameOver} text="Game Over" />
-          ) : (
-            <div>
-              <Display text={`Score: ${score}`} />
-              <Display text={`Rows: ${rows}`} />
-              <Display text={`Level: ${level}`} />
-            </div>
-          )}
-          <StartButton callback={startGame} />
-        </aside>
-      </StyledTetris>
-    </StyledTetrisWrapper>
+      <NavBar />
+      <StyledTetrisWrapper ref={gameWrapperRef} role="button" tabIndex="0" onKeyDown={e => move(e)} onKeyUp={keyUp}>
+        <StyledTetris>
+          <Stage stage={stage} />
+          <aside>
+            {gameOver ? (
+              <>
+                <Display gameOver={gameOver} text="Game Over" />
+                <p>Score: {score}</p>
+              </>
+            ) : (
+              <div>
+                <Display text={`Score: ${score}`} />
+                <Display text={`Rows: ${rows}`} />
+                <Display text={`Level: ${level}`} />
+              </div>
+            )}
+            <StartButton callback={startGame} />
+          </aside>
+        </StyledTetris>
+      </StyledTetrisWrapper>
     </>
   );
 };
