@@ -44,7 +44,7 @@ const Profile = () => {
                 <div>Email: {userProfile.email}</div>
                 <div>Profile pic: <img src={userProfile.profilePicURL} alt={`${userProfile.username}'s profile`} /></div>
                 {visitingOwnProfileAndAuth && <button onClick={onOpen}>Edit profile</button>}
-                {isOpen && <EditProfile />}
+                {isOpen && <EditProfile isOpen={isOpen} onClose={onClose}/>}
             </div>
         );
     }
