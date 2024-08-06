@@ -11,12 +11,14 @@ import Login from "./components/Login";
 import useAuthStore from "./store/authStore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase/config";
+import Profile from "./components/Profile";
 
 
 
 function App() {
-  //const authUser = useAuthStore(state => state.user);
-  const [authUser] = useAuthState(auth);
+  const authUser = useAuthStore(state => state.user);
+  //const [authUser] = useAuthState(auth);
+  console.log(authUser)
 
   return (
     <>  
@@ -28,6 +30,7 @@ function App() {
           <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/"/> } />
           <Route path="/snake" element={<Snake />} />
           <Route path="/tetris" element={<Tetris />} />
+          <Route path="/:username" element={<Profile />} />
         </Routes>
       </BrowserRouter>
       

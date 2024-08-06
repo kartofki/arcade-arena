@@ -6,9 +6,11 @@ import useLogout from '../hooks/useLogout';
 import useAuthStore from '../store/authStore';
 import { Avatar } from '@chakra-ui/react';
 import { Flex } from '@chakra-ui/react';
+
 const Home = () => {
   const { handleLogout, isLoggingOut, error } = useLogout();
   const authUser = useAuthStore(state => state.user);
+
 
   return (
     <>
@@ -53,7 +55,7 @@ const Home = () => {
       </li> }
     
       {!authUser && <li>
-        <Link to="/auth">Login</Link>
+        <Link to="/login">Login</Link>
       </li>}
 
       {authUser &&  <Flex align="center">
