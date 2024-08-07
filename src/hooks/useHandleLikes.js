@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { firestore } from '../firebase/config'; // Ensure correct import of Firebase setup
+import { firestore } from '../firebase/config';
 import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
 
 const useHandleLikes = (postId, userId) => {

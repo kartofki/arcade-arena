@@ -38,7 +38,6 @@ const useEditProfile = () => {
 			localStorage.setItem("user-info", JSON.stringify(updatedUser));
 			setAuthUser(updatedUser);
 			setUserProfile(updatedUser);
-			console.log("success")
 		} catch (error) {
 			console.log(error.message)
 		}

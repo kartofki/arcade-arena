@@ -40,10 +40,10 @@ const useGetAllPosts = () => {
 
                     if (userProfile) {
                         post.username = userProfile.username;
-                        post.profilePicURL = userProfile.profilePicURL || 'default-profile-pic-url'; // Use a default profile picture if missing
+                        post.profilePicURL = userProfile.profilePicURL || 'default-profile-pic-url'; 
                     } else {
                         post.username = 'Unknown User';
-                        post.profilePicURL = 'default-profile-pic-url'; // Use a default profile picture
+                        post.profilePicURL = 'default-profile-pic-url'; 
                     }
 
                     posts.push(post);

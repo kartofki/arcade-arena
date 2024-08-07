@@ -148,7 +148,7 @@ const Home = styled.div`
   align-items: center;
 `;
 const Background = styled.div`
-  background-image: url("../public/assets/background-day.png");
+  background-image: url("/assets/background-day.png");
   background-repeat: no-repeat;
   background-size: ${(props) => props.width}px ${(props) => props.height}px;
   width: ${(props) => props.width}px;
@@ -160,7 +160,7 @@ const Background = styled.div`
 
 const Bird = styled.div`
   position: absolute;
-  background-image: url("../public/assets/yellowbird-upflap.png");
+  background-image: url("/assets/yellowbird-upflap.png");
   background-repeat: no-repeat;
   background-size: ${(props) => props.width}px ${(props) => props.height}px;
   width: ${(props) => props.width}px;
@@ -171,7 +171,7 @@ const Bird = styled.div`
 
 const Obj = styled.div`
   position: relative;
-  background-image: url("../public/assets/pipe-green.png");
+  background-image: url("/assets/pipe-green.png");
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   left: ${(props) => props.left}px;

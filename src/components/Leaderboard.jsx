@@ -8,7 +8,7 @@ import useAuthStore from '../store/authStore';
 const Leaderboard = () => {
   const [snakeLeaderboard, setSnakeLeaderboard] = useState([]);
   const [tetrisLeaderboard, setTetrisLeaderboard] = useState([]);
-  const [flappyBirdLeaderboard, setFlappyBirdLeaderboard] = useState([]); 
+  const [flappyBirdLeaderboard, setFlappyBirdLeaderboard] = useState([]);
 
   useEffect(() => {
     const fetchLeaderboards = async () => {
@@ -17,10 +17,14 @@ const Leaderboard = () => {
         const tetrisData = await GetTetrisLeaderboard('Tetris');
         const flappyBirdData = await GetFlappyBirdLeaderboard('FlappyBird'); 
         
-        // Filter scores above 0
-        setSnakeLeaderboard(snakeData.filter(entry => entry.score > 0));
-        setTetrisLeaderboard(tetrisData.filter(entry => entry.score > 0));
-        setFlappyBirdLeaderboard(flappyBirdData.filter(entry => entry.score > 0)); 
+        // Filter and sort scores above 0
+        const sortedSnakeData = snakeData.filter(entry => entry.score > 0).sort((a, b) => b.score - a.score);
+        const sortedTetrisData = tetrisData.filter(entry => entry.score > 0).sort((a, b) => b.score - a.score);
+        const sortedFlappyBirdData = flappyBirdData.filter(entry => entry.score > 0).sort((a, b) => b.score - a.score);
+        
+        setSnakeLeaderboard(sortedSnakeData);
+        setTetrisLeaderboard(sortedTetrisData);
+        setFlappyBirdLeaderboard(sortedFlappyBirdData);
       } catch (error) {
         console.error('Error fetching leaderboards:', error);
       }
@@ -29,7 +33,7 @@ const Leaderboard = () => {
     fetchLeaderboards();
   }, []);
 
-  //Renders medals for the top 3 scores
+  // Renders medals for the top 3 scores
   const renderMedal = (index) => {
     if (index === 0) return '🥇 ';
     if (index === 1) return '🥈 ';
@@ -40,13 +44,15 @@ const Leaderboard = () => {
   return (
     <>
       <NavBar />
-      <div className="tetrisPage">
+      <div className="homeAuth2">
         <div className="leaderboards">
           <div className="leaderboardContainer">
             <h2>Snake Leaderboard</h2>
             <ol>
               {snakeLeaderboard.map((entry, index) => (
-                <li className="leadEntry" key={index}>{renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}</li>
+                <li className="leadEntry" key={index}>
+                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}
+                </li>
               ))}
             </ol>
           </div>
@@ -54,7 +60,9 @@ const Leaderboard = () => {
             <h2>Tetris Leaderboard</h2>
             <ol>
               {tetrisLeaderboard.map((entry, index) => (
-                <li className="leadEntry" key={index}>{renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}</li>
+                <li className="leadEntry" key={index}>
+                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}
+                </li>
               ))}
             </ol>
           </div>
@@ -62,7 +70,9 @@ const Leaderboard = () => {
             <h2>Flappy Bird Leaderboard</h2>
             <ol>
               {flappyBirdLeaderboard.map((entry, index) => (
-                <li className="leadEntry" key={index}>{renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}</li>
+                <li className="leadEntry" key={index}>
+                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}
+                </li>
               ))}
             </ol>
           </div>

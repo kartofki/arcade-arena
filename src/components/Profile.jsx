@@ -101,6 +101,7 @@ const Profile = () => {
                                 <div className="smallInfoContainer">
                                     <div className="smallInfo">Created: {timeAgo(new Date(userProfile.createdAt).getTime())}</div>
                                     <div className="smallInfo">Email: {userProfile.email}</div>
+                                    <div className="smallInfo">Bio: {userProfile.bio}</div>
                                 </div>
                                 {visitingOwnProfileAndAuth && (
                                     <div className="profile-actions">

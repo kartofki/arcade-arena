@@ -15,20 +15,21 @@ const App = () => {
   const authUser = useAuthStore(state => state.user); // Get the authUser from the store
 
   return (
+    <>
     <BrowserRouter>
       <Routes>
       <Route path="/" element={authUser ? <HomeAuth /> : <Home />} />
         <Route path="/auth" element={!authUser ? <AuthPage /> : <Navigate to="/"/> } />
         <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/"/>  } />
         <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/"/> } />
-        <Route path="/snake" element={<Snake />} />
-        <Route path="/flappybird" element={<FlappyBird />} />
+        <Route path="/snake" element={authUser ? <Snake /> : <Home />} />
+        <Route path="/flappybird" element={authUser ? <FlappyBird /> : <Home />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/tetris" element={<Tetris />} />
-  
+        <Route path="/tetris" element={authUser ? <Tetris /> : <Home />} />
         <Route path="/:username" element={authUser ? <Profile /> : <Navigate to="/"/>} />
       </Routes>
     </BrowserRouter>
+    </>
   );
 };
 

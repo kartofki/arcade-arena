@@ -30,13 +30,9 @@ const Login = () => {
             <div className="signupScreen">
                 <div className="formContainer">
                     <h1 className="authH1">Login</h1>
-                    <button className="google-login">
-                        <img src="../public/assets/googleLogo.webp" alt="Google Logo" />
-                        Log in using Google
-                    </button>
                     <div className="separator">
                         <div className="hr"></div>
-                        <span>or</span>
+                        <span>fill the fields below</span>
                         <div className="hr"></div>
                     </div>
                     <p className="already2">Log in using email address</p>
@@ -70,7 +66,7 @@ const Login = () => {
                         </button>
                     </form>
                     <p className="already">
-                        Don't have an account? <Link to="/register">Register now</Link>
+                        Don't have an account? <Link to="/signup">Register now</Link>
                     </p>
                 </div>
             </div>

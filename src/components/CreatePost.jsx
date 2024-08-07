@@ -1,9 +1,7 @@
 import {
 	Box,
 	Button,
-	CloseButton,
 	Flex,
-	Image,
 	Input,
 	Modal,
 	ModalBody,
@@ -16,32 +14,75 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { AddIcon} from '@chakra-ui/icons'
+import { useState } from "react";
+import { AddIcon } from '@chakra-ui/icons';
 import useShowToast from "../hooks/useShowToast";
 import useAuthStore from "../store/authStore";
 import usePostStore from "../store/postStore";
 import useUserProfileStore from "../store/userProfileStore";
 import { useLocation } from "react-router-dom";
 import { addDoc, arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
-import { firestore, storage } from "../firebase/config";
-
+import { firestore } from "../firebase/config";
 
 const CreatePost = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [title, setTitle] = useState("");
 	const [postBody, setPostBody] = useState("");
 	const showToast = useShowToast();
-	const { isLoading, handleCreatePost } = useCreatePost();
+	const [isLoading, setIsLoading] = useState(false);
+
+	const authUser = useAuthStore((state) => state.user);
+	const createPost = usePostStore((state) => state.createPost);
+	const addPost = useUserProfileStore((state) => state.addPost);
+	const userProfile = useUserProfileStore((state) => state.userProfile);
+	const { pathname } = useLocation();
 
 	const handlePostCreation = async () => {
+		if (!title.trim() || !postBody.trim()) {
+			showToast("Error", "Please provide both a title and body for the post", "error");
+			return;
+		}
+		if (isLoading) return;
+
+		if (!authUser) {
+			showToast("Error", "User not authenticated", "error");
+			return;
+		}
+
+		setIsLoading(true);
+		const newPost = {
+			title: title,
+			body: postBody,
+			likes: [],
+			comments: [],
+			createdAt: Date.now(),
+			createdBy: authUser.uid,
+		};
+
 		try {
-			await handleCreatePost(title, postBody);
+			const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+			const userDocRef = doc(firestore, "users", authUser.uid);
+
+			await updateDoc(userDocRef, { posts: arrayUnion(postDocRef.id) });
+
+			newPost.id = postDocRef.id;
+
+			if (userProfile && userProfile.uid === authUser.uid) {
+				createPost(newPost);
+			}
+
+			if (pathname !== "/" && userProfile && userProfile.uid === authUser.uid) {
+				addPost(newPost);
+			}
+
+			showToast("Success", "Post created successfully", "success");
 			onClose();
 			setTitle("");
 			setPostBody("");
 		} catch (error) {
 			showToast("Error", error.message, "error");
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -91,7 +132,12 @@ const CreatePost = () => {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button mr={3} onClick={handlePostCreation} isLoading={isLoading}>
+						<Button 
+							mr={3} 
+							onClick={handlePostCreation} 
+							isLoading={isLoading}
+							isDisabled={!title.trim() || !postBody.trim()} // Disable if empty
+						>
 							Post
 						</Button>
 					</ModalFooter>
@@ -102,59 +148,3 @@ const CreatePost = () => {
 };
 
 export default CreatePost;
-
-function useCreatePost() {
-	const showToast = useShowToast();
-	const [isLoading, setIsLoading] = useState(false);
-	const authUser = useAuthStore((state) => state.user);
-	const createPost = usePostStore((state) => state.createPost);
-	const addPost = useUserProfileStore((state) => state.addPost);
-	const userProfile = useUserProfileStore((state) => state.userProfile);
-	const { pathname } = useLocation();
-
-	const handleCreatePost = async (title, postBody) => {
-		if (isLoading) return;
-		if (!authUser) {
-			showToast("Error", "User not authenticated", "error");
-			return;
-		}
-		if (!title || !postBody) {
-			showToast("Error", "Please provide a title and body for the post", "error");
-			return;
-		}
-		setIsLoading(true);
-		const newPost = {
-			title: title,
-			body: postBody,
-			likes: [],
-			comments: [],
-			createdAt: Date.now(),
-			createdBy: authUser.uid,
-		};
-
-		try {
-			const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
-			const userDocRef = doc(firestore, "users", authUser.uid);
-
-			await updateDoc(userDocRef, { posts: arrayUnion(postDocRef.id) });
-
-			newPost.id = postDocRef.id;
-
-			if (userProfile && userProfile.uid === authUser.uid) {
-				createPost(newPost);
-			}
-
-			if (pathname !== "/" && userProfile && userProfile.uid === authUser.uid) {
-				addPost(newPost);
-			}
-
-			showToast("Success", "Post created successfully", "success");
-		} catch (error) {
-			showToast("Error", error.message, "error");
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	return { isLoading, handleCreatePost };
-}

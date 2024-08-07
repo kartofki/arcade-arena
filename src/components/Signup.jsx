@@ -34,13 +34,9 @@ const Signup = () => {
     <div className="signupScreen">
         <div className="formContainer">
             <h1 className="authH1">Register</h1>
-             {/*Google Authentication*/}
-            <button className="google-login">
-            <img src="../public/assets/googleLogo.webp" alt="Google Logo"/>
-            Log in using Google
-        </button>
+        
         {/*separator*/}
-            <div className="separator"><div className="hr"></div><span>or</span><div className="hr"></div></div>
+            <div className="separator"><div className="hr"></div><span>fill the fields below</span><div className="hr"></div></div>
             <p className="already2">Sign up using email address</p>
       <form className="add-form login" onSubmit={handleSubmit}>
          {/*email field*/}
@@ -89,7 +85,7 @@ const Signup = () => {
             placeholder="Repeat Password"
           />
         </div>
-        {error && <div className="error">{error.message}</div>}
+        {error && <div className="field input-field">{error.message}</div>}
         <button className="signupBtn" type="submit" disabled={loading}>
           {loading ? 'Registering...' : 'Register'}
         </button>

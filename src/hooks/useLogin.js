@@ -9,8 +9,7 @@ const useLogin = () => {
 
     const login = async (inputs) => {
         if (!inputs.email || !inputs.password) {
-            console.log('Fill all fields');
-            return; // Exit early if inputs are missing
+            return; 
         }
 
         try {

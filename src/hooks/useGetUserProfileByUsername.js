@@ -23,7 +23,6 @@ const useGetUserProfileByUsername = (username) => {
 				});
 
 				setUserProfile(userDoc);
-				console.log(userDoc);
 			} catch (error) {
 				console.log(error.message)
 			} finally {

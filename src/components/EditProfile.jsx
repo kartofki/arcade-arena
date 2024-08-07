@@ -20,24 +20,28 @@ import useAuthStore from "../store/authStore";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useEditProfile from "../hooks/useEditProfile";
 
-
 const EditProfile = ({ isOpen, onClose }) => {
 	const [inputs, setInputs] = useState({
 		username: "",
 		bio: "",
 	});
+	const [error, setError] = useState(""); // State to hold error messages
 	const authUser = useAuthStore((state) => state.user);
 	const fileRef = useRef(null);
 	const { handleImageChange, selectedFile, setSelectedFile } = usePreviewImg();
 	const { isUpdating, editProfile } = useEditProfile();
-	
+
 	const handleEditProfile = async () => {
+		if (inputs.bio.length > 50) {
+			setError("Bio cannot be longer than 50 characters");
+			return;
+		}
 		try {
 			await editProfile(inputs, selectedFile);
 			setSelectedFile(null);
 			onClose();
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.message);
 		}
 	};
 
@@ -73,7 +77,6 @@ const EditProfile = ({ isOpen, onClose }) => {
 									</Stack>
 								</FormControl>
 
-
 								<FormControl>
 									<FormLabel fontSize={"sm"}>Username</FormLabel>
 									<Input
@@ -93,7 +96,13 @@ const EditProfile = ({ isOpen, onClose }) => {
 										type={"text"}
 										value={inputs.bio || authUser.bio}
 										onChange={(e) => setInputs({ ...inputs, bio: e.target.value })}
+										maxLength={50} // Limit input length
 									/>
+									{error && (
+										<Stack spacing={2} mt={2}>
+											<p style={{ color: "red" }}>{error}</p>
+										</Stack>
+									)}
 								</FormControl>
 
 								<Stack spacing={6} direction={["column", "row"]}>
