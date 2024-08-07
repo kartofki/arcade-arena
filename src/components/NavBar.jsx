@@ -58,7 +58,7 @@ const Home = () => {
 
       {authUser &&  <Flex align="center">
         <Link to={`/${authUser.username}`}>
-      <Avatar size="m" maxWidth={50} mr={-7} src={authUser.profilePicURL} /></Link>
+      <img className="profile-pic-nav" src={authUser.profilePicURL} /></Link>
       <span >Hello, {authUser.username}!</span>
     </Flex> }
 

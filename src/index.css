@@ -639,3 +639,126 @@ ol {
   border-bottom: 2px solid rgba(255, 215, 0, 0.1); 
   margin-left: -4px;
 }
+.profile-pic-nav{
+  width: 27px;
+  height: 27px;
+  object-fit: cover;
+  border-radius: 145px;
+}
+
+
+/*profile*/
+
+/*profile*/
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.profileContainer {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: white;
+  margin: 20px auto;
+  max-width: 900px;
+}
+
+.profileContainer h2 {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.nameAndPic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.scoresDiv {
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.allScores {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.smallInfo {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 5px 0;
+}
+
+.smallInfoContainer {
+  margin-top: 15px;
+}
+
+.userName {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.theFlexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.postsContainer {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center posts horizontally */
+}
+
+.post {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 100%; /* Ensure the post takes up the full container width */
+  max-width: 900px; /* Limit the maximum width to 900px */
+}
+
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.post-body {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.post-actions {
+  display: flex;
+  gap: 10px;
+}
