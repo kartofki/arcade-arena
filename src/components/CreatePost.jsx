@@ -25,7 +25,7 @@ import useUserProfileStore from "../store/userProfileStore";
 import { useLocation } from "react-router-dom";
 import { addDoc, arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
 import { firestore, storage } from "../firebase/config";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+
 
 const CreatePost = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();

@@ -1,12 +1,9 @@
-import { HStack, Image, Text } from '@chakra-ui/react';
 import React from 'react';
-import LoginPage from './LoginPage';
 import { Link } from 'react-router-dom';
 import useLogout from '../hooks/useLogout';
 import useAuthStore from '../store/authStore';
-import { Avatar } from '@chakra-ui/react';
 import { Flex } from '@chakra-ui/react';
-import Forum from './Forum';
+
 
 const Home = () => {
   const { handleLogout, isLoggingOut, error } = useLogout();
@@ -42,12 +39,10 @@ const Home = () => {
         
       </li>
 }
-      
+  
       <li>
         <Link to="/leaderboard">Leaderboard</Link>
-      </li>
-      
-      
+      </li>   
     </ul>
     {/* Authentication Menu */}
     <ul className="authMenu">

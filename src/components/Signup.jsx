@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import useSignupWithEmailAndPassword from '../hooks/useSignupWithEmailAndPassword';
-import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar'
 import { Link } from 'react-router-dom';
 
@@ -28,7 +27,6 @@ const Signup = () => {
     signup(inputs);
   };
 
-  const navigate = useNavigate();
 
   return (
     <>
@@ -36,6 +34,7 @@ const Signup = () => {
     <div className="signupScreen">
         <div className="formContainer">
             <h1 className="authH1">Register</h1>
+             {/*Google Authentication*/}
             <button className="google-login">
             <img src="../public/assets/googleLogo.webp" alt="Google Logo"/>
             Log in using Google
@@ -44,6 +43,7 @@ const Signup = () => {
             <div className="separator"><div className="hr"></div><span>or</span><div className="hr"></div></div>
             <p className="already2">Sign up using email address</p>
       <form className="add-form login" onSubmit={handleSubmit}>
+         {/*email field*/}
         <div className="field input-field">
           <input
             onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
@@ -53,6 +53,7 @@ const Signup = () => {
             placeholder="Enter your email"
           />
         </div>
+         {/*username field*/}
         <div className="field input-field">
           <input
             onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
@@ -62,6 +63,7 @@ const Signup = () => {
             placeholder="Enter your username"
           />
         </div>
+         {/*password field*/}
         <div className="passContainer">
         <div className="field input-field">
           <input
@@ -71,11 +73,13 @@ const Signup = () => {
             name="password"
             placeholder="Enter your password"
           />
+           {/*visibility switch for password*/}
           <button className="eye-icon" onClick={handlePasswordVisibility}>
             {showPassword ? <ViewIcon /> : <ViewOffIcon />}
           </button>
         </div>
         </div>
+         {/*repeat password*/}
         <div className="field input-field">
           <input
             onChange={(e) => setInputs({ ...inputs, repeatPass: e.target.value })}

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import useGetUserProfileByUsername from '../hooks/useGetUserProfileByUsername';
 import NavBar from './NavBar';
 import useAuthStore from '../store/authStore';
-import { useDisclosure, Tooltip } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 import EditProfile from './EditProfile';
 import CreatePost from './CreatePost';
 import useGetUserPosts from '../hooks/useGetUserPosts';
@@ -11,8 +11,7 @@ import EditPost from './EditPost';
 import usePostStore from '../store/postStore';
 import useUserHighestScores from '../hooks/useUserHighestScores';
 import { timeAgo } from '../utils/timeAgo';
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
-import PostItem from './PostItem'; // Import the new PostItem component
+import PostItem from './PostItem';
 import {
     Modal,
     ModalOverlay,
@@ -31,17 +30,19 @@ const Profile = () => {
     const authUser = useAuthStore((state) => state.user);
     const visitingOwnProfileAndAuth = authUser && userProfile && authUser.username === userProfile.username;
 
+    // Chakra UI modal handlers
     const { isOpen: isEditProfileOpen, onOpen: onEditProfileOpen, onClose: onEditProfileClose } = useDisclosure();
     const { isOpen: isCreatePostOpen, onOpen: onCreatePostOpen, onClose: onCreatePostClose } = useDisclosure();
     const { isOpen: isEditPostOpen, onOpen: onEditPostOpen, onClose: onEditPostClose } = useDisclosure();
     const { isOpen: isViewPostOpen, onOpen: onViewPostOpen, onClose: onViewPostClose } = useDisclosure();
     const [selectedPost, setSelectedPost] = useState(null);
 
+    // Fetch user posts and scores
     const { isLoading: isPostsLoading, posts } = useGetUserPosts(username);
     const { deletePost } = usePostStore();
-
     const { scores, loading: isScoresLoading } = useUserHighestScores(username);
 
+    // Handlers for post actions
     const handleEditPostOpen = (post) => {
         setSelectedPost(post);
         onEditPostOpen();
@@ -60,11 +61,11 @@ const Profile = () => {
     const handleViewPostClose = () => {
         setSelectedPost(null);
         onViewPostClose();
-        window.location.reload(); // Trigger a page refresh
+        // Reload page to update post list after deletion
+        window.location.reload(); 
     };
 
-    console.log(userProfile, isUserProfileLoading);
-
+    // Loading and error states
     if (isUserProfileLoading) {
         return (
             <>
@@ -91,7 +92,7 @@ const Profile = () => {
                     <hr />
                     <hr />
                     <h2 className="userName">Profile</h2>
-                    <hr></hr>
+                    <hr />
                     <div className="profileContainer">
                         <h2 className="userName">{userProfile.username}'s profile!</h2>
                         <div className="theFlexRow">
@@ -155,7 +156,7 @@ const Profile = () => {
                     </div>
                     <hr />
                     <h2 className="userName">Personal Log</h2>
-                    <hr></hr>
+                    <hr />
                     <div className="postsContainer">
                         {isPostsLoading ? (
                             <div>Loading posts...</div>

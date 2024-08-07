@@ -1,8 +1,6 @@
 import React from 'react'
-import LoginPage from './LoginPage';
 import { Outlet, Link } from 'react-router-dom';
 import NavBar from './NavBar'
-import HomeAuth from './HomeAuth';
 
 const Home = () => {
     return (
@@ -17,7 +15,6 @@ const Home = () => {
         </div>
         </div>
       </div>
-        <HomeAuth  />
       
       <Outlet />
     </>
