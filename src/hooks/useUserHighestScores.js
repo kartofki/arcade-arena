@@ -9,7 +9,8 @@ const useUserHighestScores = (username) => {
     const fetchScores = async () => {
       const tetrisScore = await GetUserHighestScore(username, 'Tetris');
       const snakeScore = await GetUserHighestScore(username, 'snake');
-      setScores({ tetris: tetrisScore, snake: snakeScore });
+      const flappyScore = await GetUserHighestScore(username, 'FlappyBird')
+      setScores({ tetris: tetrisScore, snake: snakeScore, flappybird: flappyScore});
       setLoading(false);
     };
 

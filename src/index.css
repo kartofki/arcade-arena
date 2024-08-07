@@ -34,25 +34,25 @@ body {
   margin: 0 10px;
   list-style-type: none;
   color: darkblue;
-  position: relative; /* For positioning the dropdown */
+  position: relative; 
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  top: 100%; /* Position below the parent */
+  top: 100%; 
   left: 0;
   background-color: white;
   min-width: 160px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  z-index: 1;
-  padding: 0; /* Remove default padding */
+  z-index: 444;
+  padding: 0; 
 }
 
 .dropdown-content li {
   padding: 12px 16px;
   text-align: left;
-  list-style-type: none; /* Remove bullets */
+  list-style-type: none; 
 }
 
 .dropdown-content li:hover {
@@ -390,6 +390,9 @@ body {
       align-items: center;
       height: 100vh;
     }
+    .snakeContainer:focus {
+      outline: none;
+    }
     
     .snakeAll {
       display: flex;
@@ -411,17 +414,7 @@ body {
       margin-right: 20px;
     }
     
-    .leaderboardContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: 500px;
-      background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background */
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      color: white;
-    }
+   
     
     canvas {
       border: 1px solid black;
@@ -466,6 +459,7 @@ body {
       color: white;
       font-size: 20px;
       font-weight: bold;
+      max-width: 500px;
     }
     
     .gameOverMessage {
@@ -478,8 +472,14 @@ body {
     /*tetris Page*/
     .infoTetris {
       margin-top: 250px;
+      max-width: 500px;
     }
-    
+    .gameOverMessageTetris {
+      font-size: 25px;
+      color: red;
+      margin-top: 10px;
+    }
+
     .infoTetris div {
       margin-bottom: 10px;
     }
@@ -511,7 +511,13 @@ body {
       display: inline-block; /* Ensure the container wraps the content */
     }
 
-
+    .tetrisWrap:focus {
+      outline: none;
+    }
+    .tetrisPage:focus {
+      outline: none;
+    }
+   
     
 /*all posts*/
 .spinner {
@@ -565,5 +571,71 @@ body {
 
 
 
-/*post*/
+/*flappy Bird*/
 
+.flappyAll {
+  display: flex;
+  width: 800px;
+  height: 700px;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/opacity/see-through */
+  padding: 20px;
+  border-radius: 10px; /* Optional styling */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  color: white;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+/*leaderboards*/
+
+.leaderboards {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.leaderboardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  background-color: rgba(0, 0, 0, 0.4); 
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: white;
+  margin-top: 100px;
+}
+
+.leaderboardContainer h2 {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%; 
+}
+
+.leadEntry {
+  font-size: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 0;
+  width: 100%; 
+  box-sizing: border-box; 
+}
+
+.leadEntry:last-child {
+  border-bottom: none; 
+}
+
+.leadEntry:first-child,
+.leadEntry:nth-child(2),
+.leadEntry:nth-child(3) {
+ 
+  border-bottom: 2px solid rgba(255, 215, 0, 0.1); 
+  margin-left: -4px;
+}

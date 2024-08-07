@@ -21,9 +21,11 @@ export const StyledTetrisWrapper = styled.div`
     filter: blur(10px); /* Blurring the background image */
     z-index: -1; /* Ensuring the background image is behind the content */
   }
+
+  &:focus {
+    outline: none; /* Remove focus outline */
+  }
 `;
-
-
 
 export const StyledTetris = styled.div`
   background-color: rgba(0, 0, 0, 0.4); /* Black w/opacity/see-through */
@@ -36,7 +38,7 @@ export const StyledTetris = styled.div`
   position: relative;
   display: flex;
   align-items: flex-start;
-  margin-top: 20px;
+  margin-top: 50px;
   margin-right: 0;
   margin-left: 300px;
   max-width: 900px;

@@ -1,6 +1,9 @@
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import NavBar from '../../NavBar'
+import NavBar from "../../NavBar";
+import { AddUserInLeaderboard, GetUserHighestScore } from "../../../components/games/snake/leaderboard";
+import useAuthStore from '../../../store/authStore'; // Adjust the path to your auth store
+
 const BIRD_HEIGHT = 28;
 const BIRD_WIDTH = 33;
 const WALL_HEIGHT = 600;
@@ -9,12 +12,28 @@ const GRAVITY = 8;
 const OBJ_WIDTH = 52;
 const OBJ_SPEED = 6;
 const OBJ_GAP = 200;
+
 function FlappyBird() {
   const [isStart, setIsStart] = useState(false);
   const [birdpos, setBirspos] = useState(300);
   const [objHeight, setObjHeight] = useState(0);
   const [objPos, setObjPos] = useState(WALL_WIDTH);
   const [score, setScore] = useState(0);
+  const [highestScore, setHighestScore] = useState(0); // New state for highest score
+
+  const user = useAuthStore((state) => state.user); // Use Zustand to get the current user
+
+  useEffect(() => {
+    const fetchHighestScore = async () => {
+      if (user && user.username) {
+        const highestScore = await GetUserHighestScore(user.username, 'FlappyBird');
+        setHighestScore(highestScore);
+      }
+    };
+
+    fetchHighestScore();
+  }, [user]);
+
   useEffect(() => {
     let intVal;
     if (isStart && birdpos < WALL_HEIGHT - BIRD_HEIGHT) {
@@ -56,43 +75,66 @@ function FlappyBird() {
     ) {
       setIsStart(false);
       setBirspos(300);
+      if (user && user.username) {
+        AddUserInLeaderboard(user.username, 'FlappyBird', score).then(() => {
+          GetUserHighestScore(user.username, 'FlappyBird').then(setHighestScore);
+        });
+      }
       setScore(0);
     }
-  }, [isStart, birdpos, objHeight, objPos]);
+  }, [isStart, birdpos, objHeight, objPos, score, user]);
+
   const handler = () => {
     if (!isStart) setIsStart(true);
     else if (birdpos < BIRD_HEIGHT) setBirspos(0);
     else setBirspos((birdpos) => birdpos - 50);
   };
+
   return (
     <>
-    <NavBar />
-    <Home onClick={handler}>
-      <span>Score: {score}</span>
-      <Background height={WALL_HEIGHT} width={WALL_WIDTH}>
-        {!isStart ? <Startboard>Click To Start</Startboard> : null}
-        <Obj
-          height={objHeight}
-          width={OBJ_WIDTH}
-          left={objPos}
-          top={0}
-          deg={180}
-        />
-        <Bird
-          height={BIRD_HEIGHT}
-          width={BIRD_WIDTH}
-          top={birdpos}
-          left={100}
-        />
-        <Obj
-          height={WALL_HEIGHT - OBJ_GAP - objHeight}
-          width={OBJ_WIDTH}
-          left={objPos}
-          top={WALL_HEIGHT - (objHeight + (WALL_HEIGHT - OBJ_GAP - objHeight))}
-          deg={0}
-        />
-      </Background>
-    </Home>
+      <NavBar />
+      <div className="snakeScreen">
+        <div className="flappyAll">
+          <div className="snakeContainer">
+            <Home onClick={handler}>
+              <Background height={WALL_HEIGHT} width={WALL_WIDTH}>
+                <Obj
+                  height={objHeight}
+                  width={OBJ_WIDTH}
+                  left={objPos}
+                  top={0}
+                  deg={180}
+                />
+                <Bird
+                  height={BIRD_HEIGHT}
+                  width={BIRD_WIDTH}
+                  top={birdpos}
+                  left={100}
+                />
+                <Obj
+                  height={WALL_HEIGHT - OBJ_GAP - objHeight}
+                  width={OBJ_WIDTH}
+                  left={objPos}
+                  top={
+                    WALL_HEIGHT -
+                    (objHeight + (WALL_HEIGHT - OBJ_GAP - objHeight))
+                  }
+                  deg={0}
+                />
+              </Background>
+              <div className="gameButtons">
+                <div className="gameinfo">
+                  <ScoreShow>Score: {score}</ScoreShow>
+                  <ScoreShow>Your Best: {highestScore}</ScoreShow>
+                  {!isStart ? (
+                    <button className="startGameBtn">Start</button>
+                  ) : null}
+                </div>
+              </div>
+            </Home>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
@@ -137,22 +179,10 @@ const Obj = styled.div`
   transform: rotate(${(props) => props.deg}deg);
 `;
 
-const Startboard = styled.div`
-  position: relative;
-  top: 49%;
-  background-color: black;
-  padding: 10px;
-  width: 100px;
-  left: 50%;
-  margin-left: -50px;
-  text-align: center;
-  font-size: 20px;
-  border-radius: 10px;
-  color: #fff;
-  font-weight: 600;
-`;
-
 const ScoreShow = styled.div`
   text-align: center;
   background: transparent;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px;
 `;

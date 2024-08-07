@@ -13,6 +13,7 @@ import useAuthStore from "../../../store/authStore"; // Ensure this is the corre
 
 const Snake = () => {
   const canvasRef = useRef();
+  const gameContainerRef = useRef();
   const [snake, setSnake] = useState(SNAKE_START);
   const [apple, setApple] = useState(APPLE_START);
   const [dir, setDir] = useState([0, -1]);
@@ -140,6 +141,9 @@ const Snake = () => {
     setGameOver(false);
     setScore(0);
     setDirectionChanged(false);
+    if (gameContainerRef.current) {
+      gameContainerRef.current.focus();
+    }
   };
 
   useEffect(() => {
@@ -186,13 +190,8 @@ const Snake = () => {
       <NavBar />
       <div className="snakeScreen">
         <div className="snakeAll">
-          <div className="snakeContainer">
-            <div
-              role="button"
-              tabIndex="0"
-              onKeyDown={e => moveSnake(e)}
-              style={{ textAlign: "center" }}
-            >
+          <div className="snakeContainer" ref={gameContainerRef} tabIndex="0" onKeyDown={e => moveSnake(e)}>
+            <div style={{ textAlign: "center" }}>
               <canvas
                 ref={canvasRef}
                 width={`${CANVAS_SIZE[0]}px`}

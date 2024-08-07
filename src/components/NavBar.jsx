@@ -43,9 +43,6 @@ const Home = () => {
       <li>
         <Link to="/leaderboard">Leaderboard</Link>
       </li>
-      <li>
-        <Link to="/forum">Forum</Link>
-      </li>
       
       
     </ul>
@@ -61,7 +58,7 @@ const Home = () => {
 
       {authUser &&  <Flex align="center">
         <Link to={`/${authUser.username}`}>
-      <Avatar size="xs" src={authUser.profilePicURL} /></Link>
+      <Avatar size="m" maxWidth={50} mr={-7} src={authUser.profilePicURL} /></Link>
       <span >Hello, {authUser.username}!</span>
     </Flex> }
 

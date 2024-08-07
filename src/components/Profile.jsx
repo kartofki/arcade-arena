@@ -85,6 +85,7 @@ const Profile = () => {
                         <div>
                             <div>Tetris: {scores.tetris}</div>
                             <div>Snake: {scores.snake}</div>
+                            <div>Flappy Bird: {scores.flappybird}</div>
                         </div>
                     )}
                 </div>

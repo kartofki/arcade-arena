@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AddUserInLeaderboard, GetLeaderboard } from '../../../components/games/snake/leaderboard';
+import { AddUserInLeaderboard, GetLeaderboard, GetUserHighestScore } from '../../../components/games/snake/leaderboard';
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
@@ -10,12 +10,13 @@ import { useStage } from '../../../hooks/useStage';
 import { createStage, checkCollision } from './tetrisUtils';
 import { useInterval } from '../../../hooks/useInterval';
 import { useGameStatus } from '../../../hooks/useGameStatus';
-import useAuthStore from '../../../store/authStore'
+import useAuthStore from '../../../store/authStore';
 
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [highestScore, setHighestScore] = useState(0); // New state for highest score
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer(); 
   const [stage, setStage, rowsCleared, resetRowsCleared] = useStage(player, resetPlayer);
@@ -67,6 +68,15 @@ const Tetris = () => {
   };
 
   useEffect(() => {
+    const fetchHighestScore = async () => {
+      if (user && user.username) {
+        const highestScore = await GetUserHighestScore(user.username, 'Tetris');
+        setHighestScore(highestScore);
+      }
+    };
+
+    fetchHighestScore();
+
     const params = new URLSearchParams(window.location.search);
     if (params.get('start')) {
       autoStartGame();
@@ -74,7 +84,7 @@ const Tetris = () => {
         gameWrapperRef.current.focus();
       }
     }
-  }, []);
+  }, [user]);
 
   const drop = () => {
     if (rows > (level + 1) * 10) {
@@ -122,38 +132,37 @@ const Tetris = () => {
   };
 
   return (
-        <>
-          <NavBar />
-          <div className="tetrisPage">
-            <div className="tetrisWrap">
-            
-              <StyledTetrisWrapper ref={gameWrapperRef} role="button" tabIndex="0" onKeyDown={e => move(e)} onKeyUp={keyUp}>
-                <StyledTetris>
-                  <Stage stage={stage} />
-                  <aside>
-                    {gameOver ? (
-                      <>
-                      <div className="gameInfo infoTetris">
-                        <div>Game Over!</div>
-                        <div>Score: {score}</div>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="gameInfo infoTetris">
-                        <div>Score: {score}</div>
-                        <div>Rows: {rows}</div>
-                        <div>Level: {level}</div>
-                      </div>
-                    )}
-                    <StartButton callback={startGame} />
-                  </aside>
-                </StyledTetris>
-              </StyledTetrisWrapper>
-              </div>
-           
-          </div>
-        </>
-      );
+    <>
+      <NavBar />
+      <div className="tetrisPage">
+        <div className="tetrisWrap">
+          <StyledTetrisWrapper ref={gameWrapperRef} role="button" tabIndex="0" onKeyDown={e => move(e)} onKeyUp={keyUp}>
+            <StyledTetris>
+              <Stage stage={stage} />
+              <aside>
+                {gameOver ? (
+                  <>
+                    <div className="gameInfo infoTetris">
+                      <div className="gameOverMessageTetris">GAME OVER!</div>
+                      <div>Score: {score}</div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="gameInfo infoTetris">
+                    <div>Rows: {rows}</div>
+                    <div>Level: {level}</div>
+                    <div>Score: {score}</div>
+                    <div>Your Best: {highestScore}</div> {/* Display highest score */}
+                  </div>
+                )}
+                <StartButton callback={startGame} />
+              </aside>
+            </StyledTetris>
+          </StyledTetrisWrapper>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Tetris;
