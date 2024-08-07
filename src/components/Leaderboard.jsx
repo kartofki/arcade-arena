@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GetLeaderboard as GetSnakeLeaderboard } from './games/snake/leaderboard'; 
-import { GetLeaderboard as GetTetrisLeaderboard } from './games/snake/leaderboard';  
-import { GetLeaderboard as GetFlappyBirdLeaderboard } from './games/snake/leaderboard'; 
+import { GetLeaderboard } from './games/snake/leaderboard'; 
 import NavBar from './NavBar';
 import useAuthStore from '../store/authStore';
 
@@ -13,9 +11,9 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboards = async () => {
       try {
-        const snakeData = await GetSnakeLeaderboard('snake');
-        const tetrisData = await GetTetrisLeaderboard('Tetris');
-        const flappyBirdData = await GetFlappyBirdLeaderboard('FlappyBird'); 
+        const snakeData = await GetLeaderboard('snake');
+        const tetrisData = await GetLeaderboard('Tetris');
+        const flappyBirdData = await GetLeaderboard('FlappyBird'); 
         
         // Filter and sort scores above 0
         const sortedSnakeData = snakeData.filter(entry => entry.score > 0).sort((a, b) => b.score - a.score);
