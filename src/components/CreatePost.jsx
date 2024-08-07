@@ -16,10 +16,8 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { CreatePostLogo } from "../../public/assets/constants";
-import { BsFillImageFill } from "react-icons/bs";
 import { useRef, useState } from "react";
-import usePreviewImg from "../hooks/usePreviewImg";
+import { AddIcon} from '@chakra-ui/icons'
 import useShowToast from "../hooks/useShowToast";
 import useAuthStore from "../store/authStore";
 import usePostStore from "../store/postStore";
@@ -67,8 +65,8 @@ const CreatePost = () => {
 					justifyContent={{ base: "center", md: "flex-start" }}
 					onClick={onOpen}
 				>
-					<CreatePostLogo />
-					<Box display={{ base: "none", md: "block" }}>Create</Box>
+					<AddIcon />
+					<Box display={{ base: "none", md: "block" }}>New Post</Box>
 				</Flex>
 			</Tooltip>
 

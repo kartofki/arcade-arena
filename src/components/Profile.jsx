@@ -104,7 +104,7 @@ const Profile = () => {
                                 {visitingOwnProfileAndAuth && (
                                     <div className="profile-actions">
                                         <button onClick={onEditProfileOpen}>Edit profile</button>
-                                        <button onClick={onCreatePostOpen}>Add Post</button>
+                                        <CreatePost />
                                     </div>
                                 )}
                             </div>
@@ -122,7 +122,7 @@ const Profile = () => {
                             </div>
                         </div>
                         {isEditProfileOpen && <EditProfile isOpen={isEditProfileOpen} onClose={onEditProfileClose} />}
-                        {isCreatePostOpen && <CreatePost isOpen={isCreatePostOpen} onClose={onCreatePostClose} />}
+                       
                         {isEditPostOpen && <EditPost isOpen={isEditPostOpen} onClose={onEditPostClose} post={selectedPost} />}
                         {isViewPostOpen && (
                             <Modal isOpen={isViewPostOpen} onClose={handleViewPostClose}>

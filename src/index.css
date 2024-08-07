@@ -736,7 +736,7 @@ ol {
   display: flex;
   flex-direction: column;
   align-items: center; /* Center posts horizontally */
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.0);
 }
 
 .post {

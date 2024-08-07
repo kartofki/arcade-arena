@@ -7,7 +7,6 @@ import Snake from './components/games/snake/Snake';
 import Tetris from './components/games/tetris/Tetris';
 import Forum from './components/Forum';
 import Profile from './components/Profile';
-import PostView from './components/PostView'; // Import the PostView component
 import useAuthStore from './store/authStore';
 import Leaderboard from './components/Leaderboard';
 import FlappyBird from './components/games/flappybird/FlappyBird'
@@ -28,7 +27,6 @@ const App = () => {
         <Route path="/tetris" element={<Tetris />} />
         <Route path="/forum" element={<Forum />} />
         <Route path="/:username" element={<Profile />} />
-        <Route path="/posts/:postId" element={<PostView />} /> {/* Add the new route */}
       </Routes>
     </BrowserRouter>
   );
