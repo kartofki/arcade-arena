@@ -3,14 +3,16 @@ import { useParams } from 'react-router-dom';
 import useGetUserProfileByUsername from '../hooks/useGetUserProfileByUsername';
 import NavBar from './NavBar';
 import useAuthStore from '../store/authStore';
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure, Tooltip } from '@chakra-ui/react';
 import EditProfile from './EditProfile';
 import CreatePost from './CreatePost';
 import useGetUserPosts from '../hooks/useGetUserPosts';
 import EditPost from './EditPost';
 import usePostStore from '../store/postStore';
-import useUserHighestScores from '../hooks/useUserHighestScores'; // Import the new hook
-import { timeAgo } from '../utils/timeAgo'; // Import the timeAgo utility function
+import useUserHighestScores from '../hooks/useUserHighestScores';
+import { timeAgo } from '../utils/timeAgo';
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import PostItem from './PostItem'; // Import the new PostItem component
 import {
     Modal,
     ModalOverlay,
@@ -20,8 +22,7 @@ import {
     ModalBody,
     Flex,
     Stack,
-    Heading,
-    Button
+    Heading
 } from '@chakra-ui/react';
 
 const Profile = () => {
@@ -30,7 +31,6 @@ const Profile = () => {
     const authUser = useAuthStore((state) => state.user);
     const visitingOwnProfileAndAuth = authUser && userProfile && authUser.username === userProfile.username;
 
-    // Modal controls for EditProfile, CreatePost, EditPost, and ViewPost
     const { isOpen: isEditProfileOpen, onOpen: onEditProfileOpen, onClose: onEditProfileClose } = useDisclosure();
     const { isOpen: isCreatePostOpen, onOpen: onCreatePostOpen, onClose: onCreatePostClose } = useDisclosure();
     const { isOpen: isEditPostOpen, onOpen: onEditPostOpen, onClose: onEditPostClose } = useDisclosure();
@@ -40,7 +40,7 @@ const Profile = () => {
     const { isLoading: isPostsLoading, posts } = useGetUserPosts(username);
     const { deletePost } = usePostStore();
 
-    const { scores, loading: isScoresLoading } = useUserHighestScores(username); // Fetch highest scores
+    const { scores, loading: isScoresLoading } = useUserHighestScores(username);
 
     const handleEditPostOpen = (post) => {
         setSelectedPost(post);
@@ -54,11 +54,13 @@ const Profile = () => {
 
     const handleDeletePost = async (postId) => {
         await deletePost(postId);
+        onViewPostClose();
     };
 
-    const getFirstFiveWords = (text) => {
-        const words = text.split(' ');
-        return words.length > 5 ? words.slice(0, 5).join(' ') + '...' : text;
+    const handleViewPostClose = () => {
+        setSelectedPost(null);
+        onViewPostClose();
+        window.location.reload(); // Trigger a page refresh
     };
 
     console.log(userProfile, isUserProfileLoading);
@@ -86,6 +88,10 @@ const Profile = () => {
             <div>
                 <NavBar />
                 <div className="tetrisPage">
+                    <hr />
+                    <hr />
+                    <h2 className="userName">Profile</h2>
+                    <hr></hr>
                     <div className="profileContainer">
                         <h2 className="userName">{userProfile.username}'s profile!</h2>
                         <div className="theFlexRow">
@@ -119,7 +125,7 @@ const Profile = () => {
                         {isCreatePostOpen && <CreatePost isOpen={isCreatePostOpen} onClose={onCreatePostClose} />}
                         {isEditPostOpen && <EditPost isOpen={isEditPostOpen} onClose={onEditPostClose} post={selectedPost} />}
                         {isViewPostOpen && (
-                            <Modal isOpen={isViewPostOpen} onClose={onViewPostClose}>
+                            <Modal isOpen={isViewPostOpen} onClose={handleViewPostClose}>
                                 <ModalOverlay />
                                 <ModalContent bg={"black"} boxShadow={"xl"} border={"1px solid gray"} mx={3}>
                                     <ModalHeader />
@@ -131,30 +137,15 @@ const Profile = () => {
                                                     {selectedPost?.title}
                                                 </Heading>
                                                 <div className="post-body">{selectedPost?.body}</div>
-                                                {visitingOwnProfileAndAuth && (
-                                                    <Stack spacing={6} direction={["column", "row"]}>
-                                                        <Button
-                                                            bg={"red.400"}
-                                                            color={"white"}
-                                                            w='full'
-                                                            size='sm'
-                                                            _hover={{ bg: "red.500" }}
-                                                            onClick={() => handleDeletePost(selectedPost.id)}
-                                                        >
-                                                            Delete
-                                                        </Button>
-                                                        <Button
-                                                            bg={"blue.400"}
-                                                            color={"white"}
-                                                            size='sm'
-                                                            w='full'
-                                                            _hover={{ bg: "blue.500" }}
-                                                            onClick={() => handleEditPostOpen(selectedPost)}
-                                                        >
-                                                            Edit
-                                                        </Button>
-                                                    </Stack>
-                                                )}
+                                                <PostItem
+                                                    post={selectedPost}
+                                                    authUser={authUser}
+                                                    visitingOwnProfileAndAuth={visitingOwnProfileAndAuth}
+                                                    handleEditPostOpen={handleEditPostOpen}
+                                                    handleDeletePost={handleDeletePost}
+                                                    handleViewPostOpen={handleViewPostOpen}
+                                                    isInModal={true}
+                                                />
                                             </Stack>
                                         </Flex>
                                     </ModalBody>
@@ -162,26 +153,23 @@ const Profile = () => {
                             </Modal>
                         )}
                     </div>
+                    <hr />
+                    <h2 className="userName">Personal Log</h2>
+                    <hr></hr>
                     <div className="postsContainer">
                         {isPostsLoading ? (
                             <div>Loading posts...</div>
                         ) : (
                             posts.map((post) => (
-                                <div key={post.id} className="post">
-                                    <div className="post-title">{post.title}</div>
-                                    <div className="post-body">{getFirstFiveWords(post.body)} <button onClick={() => handleViewPostOpen(post)}>Read More</button></div>
-                                    <div className="post-actions">
-                                        {visitingOwnProfileAndAuth ? (
-                                            <>
-                                                <button onClick={() => handleEditPostOpen(post)}>Edit Post</button>
-                                               
-                                                <button onClick={() => handleDeletePost(post.id)}>Delete Post</button>
-                                            </>
-                                        ) : (
-                                            <button onClick={() => handleViewPostOpen(post)}>View Post</button>
-                                        )}
-                                    </div>
-                                </div>
+                                <PostItem
+                                    key={post.id}
+                                    post={post}
+                                    authUser={authUser}
+                                    visitingOwnProfileAndAuth={visitingOwnProfileAndAuth}
+                                    handleEditPostOpen={handleEditPostOpen}
+                                    handleDeletePost={handleDeletePost}
+                                    handleViewPostOpen={handleViewPostOpen}
+                                />
                             ))
                         )}
                     </div>
@@ -190,7 +178,7 @@ const Profile = () => {
         );
     }
 
-    return null; // This handles any unexpected cases
+    return null;
 };
 
 export default Profile;

@@ -490,14 +490,15 @@ body {
       top: 0;
       left: 0;
       width: 100vw;
-      height: 100vh;
+      height: 100%;
       background-image: url('../public/assets/homebg.webp');
-      background-repeat: no-repeat;
+      background-repeat: repeat-y;
       background-attachment: fixed; 
       background-size: cover;
       filter: blur(10px); /* Blurring the background image */
       z-index: -1; /* Ensuring the background image is behind the content */
     }
+    
     
     .tetrisContainer {
       background-color: rgba(0, 0, 0, 0.4); /* Black w/opacity/see-through */
@@ -735,6 +736,7 @@ ol {
   display: flex;
   flex-direction: column;
   align-items: center; /* Center posts horizontally */
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .post {
@@ -761,4 +763,75 @@ ol {
 .post-actions {
   display: flex;
   gap: 10px;
+}
+
+hr {
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.01);
+}
+
+
+.tetrisPagex {
+  padding: 20px;
+}
+
+.userNamex {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.postsContainerx {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+
+.postx {
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 300px;
+  height: 300px;
+  padding: 20px;
+  margin: 10px 0;
+  gap: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-titlex {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.post-bodyx {
+  font-size: 16px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.post-detailsx {
+  font-size: 14px;
+  color: white;
+  display: flex;
+}
+
+.post-userx {
+  display: flex;
+  align-items: center;
+}
+
+.post-avatarx {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
 }

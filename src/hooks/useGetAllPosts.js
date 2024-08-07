@@ -1,42 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import useShowToast from './useShowToast';
-import usePostStore from '../store/postStore';
-import { collection, getDocs } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
+import { collection, getDocs, query, orderBy, limit, doc, getDoc } from 'firebase/firestore';
 import { firestore } from '../firebase/config';
+import useUserProfileStore from '../store/userProfileStore';
 
 const useGetAllPosts = () => {
-	const [isLoading, setIsLoading] = useState(true);
-	const { posts, setPosts } = usePostStore();
-	const showToast = useShowToast();
+    const [isLoading, setIsLoading] = useState(true);
+    const [posts, setPosts] = useState([]);
 
-	useEffect(() => {
-		const getPosts = async () => {
-			setIsLoading(true);
-			setPosts([]);
+    const fetchUserProfile = async (userId) => {
+        const userProfileStore = useUserProfileStore.getState();
+        let userProfile = userProfileStore.profiles[userId];
 
-			try {
-				const q = collection(firestore, "posts");
-				const querySnapshot = await getDocs(q);
+        if (!userProfile) {
+            try {
+                const userProfileDoc = await getDoc(doc(firestore, "users", userId));
+                userProfile = userProfileDoc.data();
+                userProfileStore.setProfile(userId, userProfile);
+            } catch (error) {
+                console.error('Error fetching user profile: ', error);
+            }
+        }
 
-				const posts = [];
-				querySnapshot.forEach((doc) => {
-					posts.push({ ...doc.data(), id: doc.id });
-				});
+        return userProfile;
+    };
 
-				posts.sort((a, b) => b.createdAt - a.createdAt);
-				setPosts(posts);
-			} catch (error) {
-				showToast("Error", error.message, "error");
-				setPosts([]);
-			} finally {
-				setIsLoading(false);
-			}
-		};
+    useEffect(() => {
+        const getPosts = async () => {
+            setIsLoading(true);
+            setPosts([]);
 
-		getPosts();
-	}, [setPosts, showToast]);
+            try {
+                const q = query(collection(firestore, "posts"), orderBy("createdAt", "desc"), limit(3));
+                const querySnapshot = await getDocs(q);
 
-	return { isLoading, posts };
+                const posts = [];
+                for (const doc of querySnapshot.docs) {
+                    const post = { ...doc.data(), id: doc.id };
+                    const userProfile = await fetchUserProfile(post.createdBy);
+
+                    if (userProfile) {
+                        post.username = userProfile.username;
+                        post.profilePicURL = userProfile.profilePicURL || 'default-profile-pic-url'; // Use a default profile picture if missing
+                    } else {
+                        post.username = 'Unknown User';
+                        post.profilePicURL = 'default-profile-pic-url'; // Use a default profile picture
+                    }
+
+                    posts.push(post);
+                }
+
+                setPosts(posts);
+            } catch (error) {
+                console.error('Error fetching posts: ', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        getPosts();
+    }, []);
+
+    return { isLoading, posts };
 };
 
 export default useGetAllPosts;

@@ -34,6 +34,9 @@ const Home = () => {
           <li>
             <Link to="/tetris">Tetris</Link>
           </li>
+          <li>
+            <Link to="/flappybird">Flappy Bird</Link>
+          </li>
          
         </div>
         
