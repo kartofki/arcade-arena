@@ -85,7 +85,6 @@ const Tetris = () => {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
       if (player.pos.y < 1) {
-        console.log('GAME OVER!!!');
         setGameOver(true);
         setDropTime(null);
         if (user && user.username) {
@@ -123,30 +122,38 @@ const Tetris = () => {
   };
 
   return (
-    <>
-      <NavBar />
-      <StyledTetrisWrapper ref={gameWrapperRef} role="button" tabIndex="0" onKeyDown={e => move(e)} onKeyUp={keyUp}>
-        <StyledTetris>
-          <Stage stage={stage} />
-          <aside>
-            {gameOver ? (
-              <>
-                <Display gameOver={gameOver} text="Game Over" />
-                <p>Score: {score}</p>
-              </>
-            ) : (
-              <div>
-                <Display text={`Score: ${score}`} />
-                <Display text={`Rows: ${rows}`} />
-                <Display text={`Level: ${level}`} />
+        <>
+          <NavBar />
+          <div className="tetrisPage">
+            <div className="tetrisWrap">
+            
+              <StyledTetrisWrapper ref={gameWrapperRef} role="button" tabIndex="0" onKeyDown={e => move(e)} onKeyUp={keyUp}>
+                <StyledTetris>
+                  <Stage stage={stage} />
+                  <aside>
+                    {gameOver ? (
+                      <>
+                      <div className="gameInfo infoTetris">
+                        <div>Game Over!</div>
+                        <div>Score: {score}</div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="gameInfo infoTetris">
+                        <div>Score: {score}</div>
+                        <div>Rows: {rows}</div>
+                        <div>Level: {level}</div>
+                      </div>
+                    )}
+                    <StartButton callback={startGame} />
+                  </aside>
+                </StyledTetris>
+              </StyledTetrisWrapper>
               </div>
-            )}
-            <StartButton callback={startGame} />
-          </aside>
-        </StyledTetris>
-      </StyledTetrisWrapper>
-    </>
-  );
+           
+          </div>
+        </>
+      );
 };
 
 export default Tetris;

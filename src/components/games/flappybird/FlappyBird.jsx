@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import NavBar from '../../NavBar'
 const BIRD_HEIGHT = 28;
 const BIRD_WIDTH = 33;
 const WALL_HEIGHT = 600;
@@ -64,6 +65,8 @@ function FlappyBird() {
     else setBirspos((birdpos) => birdpos - 50);
   };
   return (
+    <>
+    <NavBar />
     <Home onClick={handler}>
       <span>Score: {score}</span>
       <Background height={WALL_HEIGHT} width={WALL_WIDTH}>
@@ -90,6 +93,7 @@ function FlappyBird() {
         />
       </Background>
     </Home>
+    </>
   );
 }
 

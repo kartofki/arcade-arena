@@ -369,63 +369,150 @@ body {
 
     /* snake */
 
-.snakeScreen::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('../public/assets/homebg.webp');
-  background-repeat: no-repeat;
-  background-attachment: fixed; 
-  background-size: cover;
-  filter: blur(10px); /* Blurring the background image */
-  z-index: -1; /* Ensuring the background image is behind the content */
-}
+    .snakeScreen::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('../public/assets/homebg.webp');
+      background-repeat: no-repeat;
+      background-attachment: fixed; 
+      background-size: cover;
+      filter: blur(10px); /* Blurring the background image */
+      z-index: -1; /* Ensuring the background image is behind the content */
+    }
+    
+    .snakeScreen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .snakeAll {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: rgba(0, 0, 0, 0.4); /* Black w/opacity/see-through */
+      padding: 20px;
+      border-radius: 10px; /* Optional styling */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional styling */
+      color: white;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      z-index: 2;
+    }
+    
+    .snakeContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 20px;
+    }
+    
+    .leaderboardContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 500px;
+      background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      color: white;
+    }
+    
+    canvas {
+      border: 1px solid black;
+    }
+    
+    .gameButtons {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px;
+      margin-left: 20px;
+      border-radius: 5px;
+    }
 
-.snakeScreen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+    .startGameBtn{
+      background-color: black;
+    font-size: 20px;
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    font-size: 18px;
+            color: white;
+            background: rgba(71, 71, 71, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: background 0.3s, box-shadow 0.3s;
+    }
 
-.snakeAll {
-  display: flex;
-  flex-direction: row;
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/opacity/see-through */
-  padding: 20px;
-  border-radius: 10px; /* Optional styling */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional styling */
-  color: white;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  z-index: 2;
-}
+    .startGameBtn:hover{
+      background: rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .gameInfo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .gameOverMessage {
+      font-size: 30px;
+      color: red;
+      margin-top: 10px;
+      margin-left: 20px;
+    }
 
-.snakeContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 20px;
-}
+    /*tetris Page*/
+    .infoTetris {
+      margin-top: 250px;
+    }
+    
+    .infoTetris div {
+      margin-bottom: 10px;
+    }
+    
+    .tetrisPage::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('../public/assets/homebg.webp');
+      background-repeat: no-repeat;
+      background-attachment: fixed; 
+      background-size: cover;
+      filter: blur(10px); /* Blurring the background image */
+      z-index: -1; /* Ensuring the background image is behind the content */
+    }
+    
+    .tetrisContainer {
+      background-color: rgba(0, 0, 0, 0.4); /* Black w/opacity/see-through */
+      padding: 20px;
+      border-radius: 10px; /* Optional styling */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional styling */
+      color: white;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      z-index: 2;
+      position: relative;
+      display: inline-block; /* Ensure the container wraps the content */
+    }
 
-.leaderboardContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 500px;
-  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background */
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  color: white;
-}
 
-canvas {
-  border: 1px solid black;
-}
-
+    
 /*all posts*/
 .spinner {
 	border: 8px solid #f3f3f3;

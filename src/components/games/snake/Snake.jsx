@@ -136,7 +136,7 @@ const Snake = () => {
     setSnake(SNAKE_START);
     setApple(APPLE_START);
     setDir([0, -1]);
-    setSpeed(500);
+    setSpeed(360);
     setGameOver(false);
     setScore(0);
     setDirectionChanged(false);
@@ -194,23 +194,20 @@ const Snake = () => {
               style={{ textAlign: "center" }}
             >
               <canvas
-                style={{ border: "1px solid black" }}
                 ref={canvasRef}
                 width={`${CANVAS_SIZE[0]}px`}
                 height={`${CANVAS_SIZE[1]}px`}
               />
-              <div style={{ marginTop: "10px" }}>
-                <span style={{ fontSize: "20px", fontWeight: "bold" }}>
-                  Score: {score}
-                </span>
-              </div>
-              <div style={{ marginTop: "10px" }}>
-                <span style={{ fontSize: "20px", fontWeight: "bold" }}>
-                  Your Highest Score: {highestScore}
-                </span>
-              </div>
-              {gameOver && <div style={{ fontSize: "30px", color: "red" }}>GAME OVER!</div>}
-              {!gameOver && <button
+            </div>
+          </div>
+          <div className="gameButtons">
+            <div className="gameInfo">
+              <div>Score: {score}</div>
+              <div>Your Best: {highestScore}</div>
+            </div>
+            {gameOver && <div className="gameOverMessage">GAME OVER!</div>}
+            {!gameOver && (
+              <button className="startGameBtn"
                 onClick={startGame}
                 style={{
                   padding: "10px 20px",
@@ -221,8 +218,10 @@ const Snake = () => {
                 }}
               >
                 Start Game
-              </button>}
-              {gameOver && <button
+              </button>
+            )}
+            {gameOver && (
+              <button className="startGameBtn"
                 onClick={startGame}
                 style={{
                   padding: "10px 20px",
@@ -233,10 +232,9 @@ const Snake = () => {
                 }}
               >
                 Restart Game
-              </button>}
-            </div>
+              </button>
+            )}
           </div>
-          
         </div>
       </div>
     </>
