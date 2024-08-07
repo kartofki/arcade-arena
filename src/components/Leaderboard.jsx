@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { GetLeaderboard as GetSnakeLeaderboard } from './games/snake/leaderboard'; 
-import { GetLeaderboard as GetTetrisLeaderboard } from './games/snake/leaderboard';  
-import { GetLeaderboard as GetFlappyBirdLeaderboard } from './games/snake/leaderboard'; 
+import { GetLeaderboard } from './games/snake/leaderboard'; 
 import NavBar from './NavBar';
+import { Link } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 
 const Leaderboard = () => {
@@ -13,9 +12,9 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboards = async () => {
       try {
-        const snakeData = await GetSnakeLeaderboard('snake');
-        const tetrisData = await GetTetrisLeaderboard('Tetris');
-        const flappyBirdData = await GetFlappyBirdLeaderboard('FlappyBird'); 
+        const snakeData = await GetLeaderboard('snake');
+        const tetrisData = await GetLeaderboard('Tetris');
+        const flappyBirdData = await GetLeaderboard('FlappyBird'); 
         
         // Filter and sort scores above 0
         const sortedSnakeData = snakeData.filter(entry => entry.score > 0).sort((a, b) => b.score - a.score);
@@ -51,7 +50,7 @@ const Leaderboard = () => {
             <ol>
               {snakeLeaderboard.map((entry, index) => (
                 <li className="leadEntry" key={index}>
-                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}
+                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} <Link to={`/${entry.username}`}>{entry.username}</Link>: {entry.score}
                 </li>
               ))}
             </ol>
@@ -61,7 +60,7 @@ const Leaderboard = () => {
             <ol>
               {tetrisLeaderboard.map((entry, index) => (
                 <li className="leadEntry" key={index}>
-                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}
+                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} <Link to={`/${entry.username}`}>{entry.username}</Link>: {entry.score}
                 </li>
               ))}
             </ol>
@@ -71,7 +70,7 @@ const Leaderboard = () => {
             <ol>
               {flappyBirdLeaderboard.map((entry, index) => (
                 <li className="leadEntry" key={index}>
-                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} {entry.username}: {entry.score}
+                  {renderMedal(index)} {renderMedal(index) ? '' : `${index + 1}.`} <Link to={`/${entry.username}`}>{entry.username}</Link>: {entry.score}
                 </li>
               ))}
             </ol>

@@ -50,10 +50,13 @@ const HomeAuth = () => {
                             </p>
                             <div className="post-detailsx">
                                 <img src={post.profilePicURL || '/path/to/placeholder.png'} alt={`${post.username}'s profile`} className="profile-picx post-avatarx" />
+
+                                <div className="createdBy">
                                 <div>
                                     Posted by: <a href={`/${post.username}`}>{post.username}</a>
                                 </div>
                                 <div>Created at: {new Date(post.createdAt).toLocaleString()}</div>
+                                </div>
                             </div>
                         </div>
                     ))}

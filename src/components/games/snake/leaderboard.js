@@ -25,8 +25,8 @@ const GetLeaderboard = async (game) => {
   const q = query(
     collection(db, "leaderboard"),
     where("game", "==", game),
-    orderBy("timestamp", "desc"), // Order by timestamp to get recent scores
-    limit(10)
+    orderBy("score", "desc"), // Order by score to get top scores
+    limit(10) // Limit to top 10 scores
   );
 
   const querySnapshot = await getDocs(q);
