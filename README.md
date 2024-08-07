@@ -1,6 +1,13 @@
-# React + Vite
+# Arcade Arena
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is an arcade games platform that allows users to play and compete against fellow players.
+
+Features:
+
+-> Authentification - login/register via email and password
+-> Games - Tetris, Snake and Flappy Bird developed in React
+-> Leaderboard - fetches and displays top 10 scores for each game
+-> 
 
 Currently, two official plugins are available:
 
