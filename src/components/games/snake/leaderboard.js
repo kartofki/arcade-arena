@@ -60,13 +60,13 @@ const GetLatestScores = async () => {
     });
   }
 
-  // Sort all scores by timestamp and get the latest 3 entries
+
   allScores.sort((a, b) => b.timestamp - a.timestamp);
 
-  return allScores.slice(0, 3); // Return the 3 latest scores
+  return allScores.slice(0, 3); 
 }
 
-// Function to get the highest score of a user for a specific game
+
 const GetUserHighestScore = async (username, game) => {
   const db = getFirestore(app);
   const q = query(
